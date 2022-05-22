@@ -43,29 +43,48 @@ end
 
 rule "step"
 	salience 10
+	no-loop true
 	when
-		Sala( $players : players, $machines: machines)
+		Sala($players : players)
+		$p: Player() from $players
 	then
-	
-		for(int i=0; i<$players.size();i++) {
-				int x= (int)Math.floor(Math.random()*(2000-0+1)+0);
-				if(x<800) {
-					modify(
-						$player.get(i).decreaseCash();
-						$machines.get(i).addAmount();
-					)
-				}
-				else if(x>=900 && x<990) {
-					$players.get(i).increaseCash(50);
-					$machines.get(i).decreaseCash(50);
-				}else if(x>=990) {
-					try {
-						$players.get(i).increaseCash($machines.get(i).jackpot());
-					}
-					catch(Exception e) {
-					}
-				}
-				$players.get(i).addStep();
+		//$p.decreaseCash();
+		int x= (int)Math.floor(Math.random()*(1000-0+1)+0);
+		if(x<800) {
+			modify(
+				$p
+			){decreaseCash(), addStep()}
+		}else if(x>=900 && x<990) {
+			modify(
+				$p
+			){increaseCash(50), addStep()}
+			}else if(x>=990) {
+				$p.jackpot();
+				$p.addStep();
+				update($p);
 			}
-			this.counter++;
+	
+		
+		
+		//for(int i=0; i<$players.size();i++) {
+		//		int x= (int)Math.floor(Math.random()*(2000-0+1)+0);
+		//		if(x<800) {
+		//			modify(
+		//				$player.get(i).decreaseCash();
+		//				$machines.get(i).addAmount();
+		//			)
+		//		}
+		//		else if(x>=900 && x<990) {
+		//			$players.get(i).increaseCash(50);
+		//			$machines.get(i).decreaseCash(50);
+		//		}else if(x>=990) {
+		//			try {
+		//				$players.get(i).increaseCash($machines.get(i).jackpot());
+		//			}
+		//			catch(Exception e) {
+		//			}
+		//		}
+		//		$players.get(i).addStep();
+		//	}
+		//	this.counter++;
 end

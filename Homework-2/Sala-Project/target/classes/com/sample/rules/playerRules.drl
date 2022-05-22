@@ -25,6 +25,8 @@ rule "A player do jackpot!"
 		System.out.println("Something do Jackpot");
 end
 
+
+
 /**
 Check if player lose money and leave it when they lose all money.
 */
@@ -32,8 +34,10 @@ rule "A player lose everything"
     //include attributes such as "salience" here...
     when
         //conditions
+        
         $s: Sala ($players: players)
-        $e: Player(cash==0.0) from $players
+        $e: Player(cash==0) from $players
+       
   		//forall (Player( $cash: cash, $cash==0.0 ) from $players
        // $elementTocheck : ArrayList() 
          //         from collect(Player($cash: cash, $cash==0.0)  from $players)
@@ -49,18 +53,26 @@ rule "A player lose everything"
     then
         //actions
         $s.playerLeave($e);
+        retract($e)
         System.out.println("A player lose everything!");
 
 end
 
 
+rule "Player With big amount"
+when
+	$p:Player(cash >=1000)
+then
+	System.out.println("One player has a big amount:"+$p.getCash());
+end
+
+
 
 rule "User Money"
-	
-	when 
-		Sala ($players: players, getMachines().size()>0, getPlayers().size()>0)
-		//$e: Player() from $players
-		accumulate( Player( $a: cash ) from $players, 
+	timer (cron:* 0/3 * * * ?)
+	when  
+		Sala ($players: players, getMachines().size()>0, getPlayers().size()>0) // Check if there are players to check the property.
+		accumulate( Player( $a: cash ) from $players,  // it could be done //$e: Player() from $players
 			$max: max( $a ),
 			$min: min( $a ),
 			$avg: average( $a )
@@ -68,5 +80,7 @@ rule "User Money"
 	then
 		System.out.println(	"User) - Maximum value of money:" + $max + " Minimum:" + $min + " Averange:" + $avg);		
 end
+
+
 
 

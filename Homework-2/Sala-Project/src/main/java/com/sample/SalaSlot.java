@@ -23,7 +23,7 @@ public class SalaSlot {
         	while(numberOfMachine<1 || numberOfMachine>30) {
         		numberOfMachine=sc.nextInt();
         	}
-        	Sala s=new Sala(numberOfMachine);
+        	Sala s=new Sala(numberOfMachine,kSession);
         	FactHandle fh = kSession.insert(s);
 
         	//FactHandle salaFact= session.insert( fact_a );
@@ -52,14 +52,15 @@ public class SalaSlot {
             			operation(s,3,y);
             			break;
             		case 4:
+            			//s.getPlayers().stream().forEach(t -> kSession.insert(t));
+                    	kSession.update(fh, s);
+                        kSession.fireAllRules();   
             			//s.step();
             			break;
             	}
             	//FactHandle fc=kSession.insert(s);
             	//kSession.setGlobal( "globalSala", s );
-                //kSession.update(null, args);     
-            	kSession.update(fh, s);
-                kSession.fireAllRules();            
+                //kSession.update(null, args);              
                 }
             
         	// go !

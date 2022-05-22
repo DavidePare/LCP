@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.kie.api.runtime.KieSession;
+
 public class Sala {
 	private ArrayList<Machine> machines;
 	private ArrayList<Player> players;
@@ -11,8 +13,22 @@ public class Sala {
 	private Random rand;
 	private Scanner sc;
 	private int counter;
-	
+	private KieSession kSession;
 	private int length=10;
+	public Sala(int startMachine, KieSession kSession) {
+		this.players= new ArrayList<Player>();
+		this.machines= new ArrayList<Machine>();
+		this.kSession=kSession;
+		while(startMachine-- !=0) {
+			Machine m = new Machine();
+			machines.add(m);
+			kSession.insert(m);
+		}
+		this.boss= new Owner();
+		this.rand = new Random();
+		this.sc= new Scanner(System.in);
+		
+	}
 	public Sala(int startMachine) {
 		this.players= new ArrayList<Player>();
 		this.machines= new ArrayList<Machine>();
@@ -25,7 +41,6 @@ public class Sala {
 		this.sc= new Scanner(System.in);
 		
 	}
-	
 	
 	/**
 	 * For all players decrease value 
@@ -54,8 +69,9 @@ public class Sala {
 	}
 	public void playerSit() {
 		if(players.size()< machines.size()) {
-			Player e = new Player(15,0);
+			Player e = new Player(15,0,machines.get((players.size())));
 			players.add(e);
+			kSession.insert(e);
 		}else System.out.println("He can't sit");
 	}
 	public void playerLeave() {
@@ -67,6 +83,7 @@ public class Sala {
 			if(pos<0 || pos> players.size()) System.out.println("Wrong interval");
 			else flag=false;
 		}
+		Player p = players.get(pos);
 		players.remove(pos);
 		Machine a= machines.get(pos);
 		machines.remove(pos);
