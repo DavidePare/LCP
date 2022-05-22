@@ -1,0 +1,36 @@
+//created on: 18 mag 2022
+package com.sample.rules
+
+//list any import classes here.
+
+import com.sample.Sala;
+import java.util.ArrayList;
+
+import com.sample.Player;
+
+import com.sample.Owner;
+import com.sample.Machine;
+
+
+//declare any global variables here
+
+
+
+/**
+* When a boss fails it will be changed.
+*/
+rule "Boss lose all reputation"
+	agenda-group "bossOwn"
+    when
+        $s: Sala (getBoss().isFailed())
+    then
+    	$s.changeBoss();
+    	System.out.println("The old boss is failed, Now boss is welcome!");
+        //actions
+
+end
+
+
+query "Boss don't fail for a lot of round" ($own) 
+	Player( humor==false )
+end

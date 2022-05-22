@@ -1,0 +1,72 @@
+//created on: 15 mag 2022
+package com.sample.rules
+
+import com.sample.Sala;
+import java.util.ArrayList;
+
+import com.sample.Player;
+
+import com.sample.Machine;
+
+
+//declare any global variables here
+//global Sala globalSala;
+
+
+/**
+Verify when a player take a jackpot, 
+*/
+rule "A player do jackpot!"
+    when
+        $s: Sala ($machines: machines,$players: players, $players.size()>0)
+        exists Machine(amount==0.0) from $machines
+    then
+        //actions
+		System.out.println("Something do Jackpot");
+end
+
+/**
+Check if player lose money and leave it when they lose all money.
+*/
+rule "A player lose everything"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+        $s: Sala ($players: players)
+        $e: Player(cash==0.0) from $players
+  		//forall (Player( $cash: cash, $cash==0.0 ) from $players
+       // $elementTocheck : ArrayList() 
+         //         from collect(Player($cash: cash, $cash==0.0)  from $players)
+        //forall ( Player( $cash: cash ) from $players)
+       // $pages: ArrayList() from accumulate( Player( $cash: cash ) from $players,
+        //	init( ArrayList list = new ArrayList(); ),
+       // 	action( list.add( $cash ); ),
+        //	result( list ) )
+        
+      //   not Player( cash == 0.0 ) from $pages
+        //not Player(cash==0.0) from $s.getPlayers()
+        //$res: List() from collect ( ($s.player.getCash==0.0) from $player )
+    then
+        //actions
+        $s.playerLeave($e);
+        System.out.println("A player lose everything!");
+
+end
+
+
+
+rule "User Money"
+	
+	when 
+		Sala ($players: players, getMachines().size()>0, getPlayers().size()>0)
+		//$e: Player() from $players
+		accumulate( Player( $a: cash ) from $players, 
+			$max: max( $a ),
+			$min: min( $a ),
+			$avg: average( $a )
+			)
+	then
+		System.out.println(	"User) - Maximum value of money:" + $max + " Minimum:" + $min + " Averange:" + $avg);		
+end
+
+
