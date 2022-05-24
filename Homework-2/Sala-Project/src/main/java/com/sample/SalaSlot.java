@@ -1,15 +1,27 @@
 package com.sample;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 
 
 public class SalaSlot {
-
+	public static final String TEXT_RESET = "\u001B[0m";
+	public static final String TEXT_BLACK = "\u001B[30m";
+	public static final String TEXT_RED = "\u001B[31m";
+	public static final String TEXT_GREEN = "\u001B[32m";
+	public static final String TEXT_YELLOW = "\u001B[33m";
+	public static final String TEXT_BLUE = "\u001B[34m";
+	public static final String TEXT_PURPLE = "\u001B[35m";
+	public static final String TEXT_CYAN = "\u001B[36m";
+	public static final String TEXT_WHITE = "\u001B[37m";
 	public static void main(String[] args) {
 		try {
             // load up the knowledge base
@@ -54,7 +66,15 @@ public class SalaSlot {
             		case 4:
             			//s.getPlayers().stream().forEach(t -> kSession.insert(t));
                     	kSession.update(fh, s);
-                        kSession.fireAllRules();   
+                        kSession.fireAllRules();  
+                        int size=kSession.getQueryResults("palyer-are-going-toLoseAll").toList().size();
+                        if(size > 0) System.out.println(TEXT_YELLOW+size +" are going to lose everything"+TEXT_RESET);
+                        /*List<Map<String,Object>> results=kSession.getQueryResults("palyer-are-going-toLoseAll").toList(); //.forEach(t -> System.out.println("\u001B[33m This player is going to lose everything" + t.getClass() + "\u001B[0m" ));
+            			results.forEach(t ->{
+	            			for (String key: t.keySet()) {
+	            			    System.out.println("key : " + key);
+	            			    System.out.println("value : " + t.get(key));
+	            			}});*/
             			//s.step();
             			break;
             	}

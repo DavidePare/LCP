@@ -243,4 +243,10 @@ public class Sala {
 	public void removePosMachine(int pos) {
 		machines.remove(pos);
 	}
+	
+	public void addCounter() {
+		this.counter++;
+	}
+	
+	
 }
