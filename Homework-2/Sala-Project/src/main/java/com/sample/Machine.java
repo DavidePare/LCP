@@ -20,7 +20,7 @@ public class Machine {
 		totalAmount+=5;
 	}
 	public void decreaseCash(double x) {
-		totalAmount-=50.0;
+		totalAmount-=x;
 	}
 	public void increaseCash(double x) {
 		totalAmount+=x;

@@ -11,16 +11,6 @@ import com.sample.Machine;
 
 //declare any global variables here
 //global Sala globalSala;
- 
-declare String TEXT_RESET = "\u001B[0m";
- String TEXT_BLACK = "\u001B[30m";
- String TEXT_RED = "\u001B[31m";
- String TEXT_GREEN = "\u001B[32m";
- String TEXT_YELLOW = "\u001B[33m";
- String TEXT_BLUE = "\u001B[34m";
- String TEXT_PURPLE = "\u001B[35m";
- String TEXT_CYAN = "\u001B[36m";
- String TEXT_WHITE = "\u001B[37m";
 
 
 /**
@@ -32,7 +22,7 @@ rule "A player do jackpot!"
         exists Machine(amount==0.0) from $machines
     then
         //actions
-		System.out.println(TEXT_GREEN+ "Something do Jackpot");
+		System.out.println("\u001B[32mSomething do Jackpot \u001B[0m");
 end
 
 
@@ -51,7 +41,7 @@ rule "A player lose everything"
         //actions
         $s.playerLeave($e);
         retract($e)
-        System.out.println("A player lose everything!");
+        System.out.println("\u001B[31mA player lose everything! \u001B[0m");
 
 end
 
@@ -66,8 +56,8 @@ end
 
 
 rule "User Money"
-	timer (cron:* 0/3 * * * ?)
 	when  
+		not Player(cash ==null)
 		Sala ($players: players, getMachines().size()>0, getPlayers().size()>0) // Check if there are players to check the property.
 		accumulate( Player( $a: cash ) from $players,  // it could be done //$e: Player() from $players
 			$max: max( $a ),
@@ -91,7 +81,7 @@ rule "Not Machines!"
 	    not Sala ($machines: machines, !$machines.isEmpty())
 		//not $machines.size()!=0	
 	then
-		System.out.println("Sala doesn't have machine!!!");
+		System.out.println("\u001B[31mSala doesn't have machine!!! \u001B[0m");
 end
 
 /**
@@ -107,7 +97,7 @@ rule "Sala Full"
 	//	$s.getMachines().size()==$s.getPlayers().size()
     then
         //actions
-        System.out.println("Sala Slot full. Nmuber of machines and players "+$s.getMachines().size());
+        System.out.println("\u001B[31mSala Slot full. Number of machines and players "+$s.getMachines().size()+" \u001B[0m");
 end
 
 rule "step"
@@ -143,19 +133,16 @@ rule "Boss lose all reputation"
         $s: Sala (getBoss().isFailed())
     then
     	$s.changeBoss();
-    	System.out.println("The old boss is failed, Now boss is welcome!");
+    	System.out.println("\u001B[31mThe old boss is failed, Now boss is welcome! \u001B[0m");
         //actions
 
 end
 
 rule "Boss with good reputation"
-	agenda-group "bossOwn"
     when
-        Sala(getBoss().getReputation() >=25.0) 
+        Sala($o: boss, $o.getReputation()>=25) 
     then 
-    	System.out.println("Boss with good reputation!");
-        //actions
-
+    	System.out.println("\u001B[32mBoss with good reputation!\u001B[0m");
 end
 
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,10 @@ class TestCaseSala {
 	    KieContainer kContainer = ks.getKieClasspathContainer();
     	kSession = kContainer.newKieSession("ksession-rules");
 	}
+	@AfterAll
+	public static void destroySession() {
+		kSession.dispose();
+	}
 	
 	@BeforeEach
 	public void initial() {
@@ -35,7 +40,7 @@ class TestCaseSala {
 	public void testBoss() {
 		System.out.println("TITLE:Boss failed");
 		Sala s =new Sala(25);
-		for(int i=0;i<24;i++) s.playerSit();
+		for(int i=0;i<24;i++) s.playerSit(kSession);
     	FactHandle fh = kSession.insert(s);
 		Owner boss= s.getBoss();
 		//s.fillMachine();
@@ -51,7 +56,7 @@ class TestCaseSala {
 		System.out.println("TITLE:Sala full");
 
 		Sala s =new Sala(25);
-		s.fillMachine();
+		s.fillMachine(kSession);
     	FactHandle fh = kSession.insert(s);
 		kSession.fireAllRules();
 	}
@@ -60,21 +65,26 @@ class TestCaseSala {
 	public void testJackpot() {
 		System.out.println("TITLE:Jackpot");
 
-		Sala s =new Sala(25);
-		s.playerSit();
-		s.getMachines().get(0).jackpot();
+		Sala s =new Sala(100);
+		for(int i=0;i<100;i++) {
+			s.getMachines().get(i).jackpot();
+			s.getMachines().get(i).decreaseCash(5);
+		}
+		for(int i=0;i<99;i++) s.playerSit(kSession);
     	FactHandle fh = kSession.insert(s);
 		kSession.fireAllRules();
-		assertTrue(s.getMachines().get(0).getAmount() ==0.0);
+		
 	}
 	
 	@Test
 	public void testAmountPlayers() {
-		System.out.println("TITLE:Amout Players");
+		System.out.println("TITLE:Amout Players | Big Amount");
 
 		Sala s =new Sala(25);
-		for(int i=0;i<24;i++) s.playerSit();
-		s.step();
+		for(int i=0;i<24;i++) s.playerSit(kSession);
+    	FactHandle fh = kSession.insert(s);
+    	s.getPlayers().get(0).addAmount(1000);
+		kSession.fireAllRules();
 		double max=Integer.MIN_VALUE,min=Integer.MAX_VALUE,sum=0;
 		for(int i=0;i<24;i++) {
 			if(max<s.getPlayers().get(i).getCash()) max=s.getPlayers().get(i).getCash();
@@ -82,9 +92,8 @@ class TestCaseSala {
 			sum+=s.getPlayers().get(i).getCash();
 
 		}
-    	FactHandle fh = kSession.insert(s);
     	System.out.println("Maximum calculated:"+max+" Minimum calculated:"+ min+" Averange"+sum/24 );
-		kSession.fireAllRules();
+		
 	}
 
 	@Test
@@ -104,9 +113,15 @@ class TestCaseSala {
 	public void TestPlayerLoseAll() {
 		System.out.println("TITLE:Player Lose everything");
 		Sala s =new Sala(25);
-		s.playerSit();
-		s.getPlayers().get(0).losaAll();;
+		for(int i=0;i<24;i++) s.playerSit(kSession);
+	//	s.playerSit(kSession);
+		for(int i=0;i<5;i++) {
+			s.getPlayers().get(i).losaAll();
+			s.getPlayers().get(i).addAmount(5);
+		}
+		kSession.insert(s.getPlayers().get(0));
     	FactHandle fh = kSession.insert(s);
+		kSession.fireAllRules();
 		kSession.fireAllRules();
 	}
 	
@@ -114,11 +129,26 @@ class TestCaseSala {
 	public void testBossGoodReputation() {
 		System.out.println("TITLE:Boss good reputation");
 		Sala s =new Sala(25);
-		for(int i=0;i<24;i++) s.playerSit();
+		//for(int i=0;i<24;i++) s.playerSit(kSession);
 
-		for(int i=0;i<30;i++)	s.addCashToMachine();
+		for(int i=0;i<100;i++)	s.addCashToMachine();
     	FactHandle fh = kSession.insert(s);
 		//kSession.update(fh, s);
 		kSession.fireAllRules();
+	}
+	@Test
+	public void step() {
+		Sala s =new Sala(4);
+		for(int i=0;i<3;i++) s.playerSit(kSession);
+		System.out.println("After 3 Rounds..");        	
+		FactHandle fh = kSession.insert(s);
+
+		kSession.insert(fh);
+		kSession.fireAllRules();
+		kSession.update(fh, s);
+		kSession.fireAllRules();
+		kSession.update(fh, s);
+		kSession.fireAllRules();
+		s.showMachine();
 	}
 }

@@ -13,22 +13,7 @@ public class Sala {
 	private Random rand;
 	private Scanner sc;
 	private int counter;
-	private KieSession kSession;
 	private int length=10;
-	public Sala(int startMachine, KieSession kSession) {
-		this.players= new ArrayList<Player>();
-		this.machines= new ArrayList<Machine>();
-		this.kSession=kSession;
-		while(startMachine-- !=0) {
-			Machine m = new Machine();
-			machines.add(m);
-			kSession.insert(m);
-		}
-		this.boss= new Owner();
-		this.rand = new Random();
-		this.sc= new Scanner(System.in);
-		
-	}
 	public Sala(int startMachine) {
 		this.players= new ArrayList<Player>();
 		this.machines= new ArrayList<Machine>();
@@ -41,33 +26,7 @@ public class Sala {
 		this.sc= new Scanner(System.in);
 		
 	}
-	
-	/**
-	 * For all players decrease value 
-	 */
-	public void step() {
-		for(int i=0; i<players.size();i++) {
-			int x= (int)Math.floor(Math.random()*(2000-0+1)+0);
-			if(x<800) {
-				players.get(i).decreaseCash();
-				machines.get(i).addAmount();
-			}
-			else if(x>=900 && x<990) {
-				players.get(i).increaseCash(50);
-				machines.get(i).decreaseCash(50);
-			}else if(x>=990) {
-				try {
-					players.get(i).increaseCash(machines.get(i).jackpot());
-				}
-				catch(Exception e) {
-				}
-			}
-			players.get(i).addStep();
-		}
-		this.counter++;
-		
-	}
-	public void playerSit() {
+	public void playerSit(KieSession kSession) {
 		if(players.size()< machines.size()) {
 			Player e = new Player(15,0,machines.get((players.size())));
 			players.add(e);
@@ -163,9 +122,9 @@ public class Sala {
 	}
 	
 	
-	public void fillMachine() {
+	public void fillMachine(KieSession kSession) {
 		int n= machines.size()-players.size();
-		for(int i=0;i<n;i++) this.playerSit();
+		for(int i=0;i<n;i++) this.playerSit(kSession);
 
 	}
 	

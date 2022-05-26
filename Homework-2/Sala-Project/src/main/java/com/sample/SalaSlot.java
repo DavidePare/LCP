@@ -22,12 +22,13 @@ public class SalaSlot {
 	public static final String TEXT_PURPLE = "\u001B[35m";
 	public static final String TEXT_CYAN = "\u001B[36m";
 	public static final String TEXT_WHITE = "\u001B[37m";
+	public static KieSession kSession;
 	public static void main(String[] args) {
 		try {
             // load up the knowledge base
 			KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
-        	KieSession kSession = kContainer.newKieSession("ksession-rules");
+        	kSession = kContainer.newKieSession("ksession-rules");
 			int x=-1,y=0;
         	System.out.println("Enter number of initial machine:");
         	Scanner sc = new Scanner(System.in);
@@ -35,7 +36,7 @@ public class SalaSlot {
         	while(numberOfMachine<1 || numberOfMachine>30) {
         		numberOfMachine=sc.nextInt();
         	}
-        	Sala s=new Sala(numberOfMachine,kSession);
+        	Sala s=new Sala(numberOfMachine);
         	FactHandle fh = kSession.insert(s);
 
         	//FactHandle salaFact= session.insert( fact_a );
@@ -96,7 +97,7 @@ public class SalaSlot {
 						s.showPlayers();
 						break;
 					case 2:
-						s.playerSit();
+						s.playerSit(kSession);
 						break;
 					case 3:
 						s.playerLeave();
@@ -129,7 +130,7 @@ public class SalaSlot {
 						s.showMachine();
 						break;
 					case 2:
-						s.fillMachine();
+						s.fillMachine(kSession);
 						break;
 				}
 				break;
