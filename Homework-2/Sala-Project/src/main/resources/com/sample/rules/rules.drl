@@ -93,11 +93,13 @@ rule "Sala Full"
     enabled true
     when
         //conditions
-        $s : Sala ($s.getMachines.size()==$s.getPlayers.size() , $s.getMachines.size()>0)
+        $s : Sala ($s.getMachines.size()==$s.getPlayers.size() , 
+        		   $s.getMachines.size()>0)
 	//	$s.getMachines().size()==$s.getPlayers().size()
     then
         //actions
-        System.out.println("\u001B[31mSala Slot full. Number of machines and players "+$s.getMachines().size()+" \u001B[0m");
+        System.out.println("\u001B[31mSala Slot full. Number of machines and players "
+        					+$s.getMachines().size()+" \u001B[0m");
 end
 
 rule "step"
@@ -107,7 +109,6 @@ rule "step"
 		$s: Sala($players : players)
 		$p: Player() from $players
 	then
-		//$p.decreaseCash();
 		int x= (int)Math.floor(Math.random()*(1000-0+1)+0);
 		if(x<800) {
 			modify(
@@ -123,8 +124,6 @@ rule "step"
 				update($p);
 			}
 		$s.addCounter();
-		
-		
 end
 
 rule "Boss lose all reputation"

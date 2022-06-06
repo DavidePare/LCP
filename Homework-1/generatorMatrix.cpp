@@ -3,7 +3,8 @@
 #include <vector>
 #define sz(x) (int)x.size()
 #define pb push_back
-
+#define maxi 30
+#define prob 950
 using namespace std;
 
 
@@ -14,8 +15,8 @@ int main() {
 	int numberfile;
 	cin>>numberfile;
 	while(numberfile--){	
-		int x=rand() % 100 + 2;
-		int y=rand() % 100 + 2;
+		int x=rand() % maxi + 2;
+		int y=rand() % maxi + 2;
 		cout<<x<<"  "<<y<<endl;
 		fstream my_file;
 		string filename="fileData";
@@ -37,8 +38,8 @@ int main() {
 			for(int i=0;i<x;i++){
 				for(int j=0;j<y;j++){
 					int valore=rand() % 1000 ;
-					cout<<valore<<"\n";
-					if(valore< 950){
+					//cout<<valore<<"\n";
+					if(valore< prob){
 						my_file << "0";
 					}else my_file << "M";
 					my_file << ",";
