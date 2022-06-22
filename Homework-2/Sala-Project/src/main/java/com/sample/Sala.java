@@ -78,7 +78,7 @@ public class Sala {
 	public void showMachine() {
 		int j=0;
 		int pSize= players.size();
-		System.out.println(players.size());
+		//System.out.println(players.size());
 		aCapo();
 		for(int i=0; i<machines.size(); i++) {
 			//if(i%5==0 && i!=0) System.out.println();
@@ -206,6 +206,8 @@ public class Sala {
 	public void addCounter() {
 		this.counter++;
 	}
-	
+	public void playerSit(Player p) {
+		this.players.add(p);
+	}
 	
 }

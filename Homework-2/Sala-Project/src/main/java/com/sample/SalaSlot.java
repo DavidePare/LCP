@@ -48,6 +48,8 @@ public class SalaSlot {
             	if(x<0 || x>4) {
             		System.out.println("Wrong select!");
             	}
+
+            	kSession.update(fh, s);
             	switch(x) {
             		case 1:
             			console.menuPlayer();
@@ -65,23 +67,13 @@ public class SalaSlot {
             			operation(s,3,y);
             			break;
             		case 4:
-            			//s.getPlayers().stream().forEach(t -> kSession.insert(t));
+
                     	kSession.update(fh, s);
                         kSession.fireAllRules();  
                         int size=kSession.getQueryResults("palyer-are-going-toLoseAll").toList().size();
                         if(size > 0) System.out.println(TEXT_YELLOW+size +" are going to lose everything"+TEXT_RESET);
-                        /*List<Map<String,Object>> results=kSession.getQueryResults("palyer-are-going-toLoseAll").toList(); //.forEach(t -> System.out.println("\u001B[33m This player is going to lose everything" + t.getClass() + "\u001B[0m" ));
-            			results.forEach(t ->{
-	            			for (String key: t.keySet()) {
-	            			    System.out.println("key : " + key);
-	            			    System.out.println("value : " + t.get(key));
-	            			}});*/
-            			//s.step();
             			break;
             	}
-            	//FactHandle fc=kSession.insert(s);
-            	//kSession.setGlobal( "globalSala", s );
-                //kSession.update(null, args);              
                 }
             
         	// go !
@@ -97,6 +89,8 @@ public class SalaSlot {
 						s.showPlayers();
 						break;
 					case 2:
+						/*kSession.getAgenda().getAgendaGroup( "myGroup1" ).setFocus();
+						kSession.fireAllRules();*/
 						s.playerSit(kSession);
 						break;
 					case 3:
