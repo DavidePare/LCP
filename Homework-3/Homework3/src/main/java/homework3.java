@@ -9,7 +9,6 @@ import java.util.Scanner;
             Solver solver = new Solver("Queens-Problem");
             Scanner sc = new Scanner(System.in);
             int boardSize=-1;
-            // [START variables]
             try{
                 System.out.println("Insert the value of boardSize (more the value is high more time could be required):");
                 while(boardSize<1)
