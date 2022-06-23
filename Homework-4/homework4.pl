@@ -28,8 +28,14 @@ action(state(X,onwindow(X),Pos2,Y),gotofloor,state(X,floor(X),Pos2,Y)). /* the m
 action(state(X,opened(X),Pos2,Y),enter,state(X,onwindow(X),Pos2,Y)).  /* monkey 2 enter from the window*/
 action(state(floor(X),openable(X),Pos2,Y),m1openwindowtom2,state(floor(X),opened(X),Pos2,Y)). /* monkey 1 open window for monkey 2*/
 action(state(Pos1,out(X),Pos2,Y),go(out(X),out(openable(window))),state(Pos1,openable(window),Pos2,Y)). /* The monkey could be not near a window*/
+
+
+action(state(floor(X),Z,X,floor(X)),m2go(Z,floor(X)),state(floor(X),floor(X),X,floor(X))). /* monkey go under the banana */ 
+
 action(state(Pos1,Z,X,Pos1),push(Pos1,floor(X)),state(floor(X),Z,X,floor(X))). /* we need push chair*/
 action(state(out(A),Z,X,Y),changemonkeys,state(Z,out(A),X,Y)).
+
+
 action(state(Pos1,X,Z,Y),go(Pos1,Pos2),state(Pos2,X,Z,Y)).
 
 
