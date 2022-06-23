@@ -9,12 +9,11 @@ import com.sample.Player;
 import com.sample.Machine;
 
 
-//declare any global variables here
-//global Sala globalSala;
 
 
-/**
-Verify when a player take a jackpot, 
+
+/*
+Verify when a player take a jackpot
 */
 rule "A player do jackpot!"
     when
