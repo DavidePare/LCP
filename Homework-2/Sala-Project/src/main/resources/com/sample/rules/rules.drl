@@ -17,7 +17,8 @@ Verify when a player take a jackpot
 */
 rule "A player do jackpot!"
     when
-        $s: Sala ($machines: machines,$players: players, $players.size()>0)
+        $s: Sala ($machines: machines,$players: players,
+        	 $players.size()>0)
         exists Machine(amount==0.0) from $machines
     then
         //actions

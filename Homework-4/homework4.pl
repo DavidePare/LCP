@@ -1,21 +1,8 @@
-/*
-# state(MonkeyPosition, BananaPosition, ChainPosition)
+/*# state(MonkeyPosition, BananaPosition, ChainPosition)
 # state(MonkeyPosition, MonkeyPosition2, BananaPosition, ChainPosition)
-
-# Action for a single monkey 
-
-#action(state(Pos,Pos,held),drop,state(Pos,Pos,in_basket)).
-#action(state(Pos1,Y,floor(Pos1)),pickup,state(Pos1,Y,held)).
-#action(state(Pos1,Pos1,X),push(Pos1,Pos2),state(Pos2,Pos2,X)).
-#action(state(Pos1,X,Y),go(Pos1,Pos2),state(Pos2,X,Y)).
-#S0=state(corner2,celieng,corner3),S1=state(_,eaten(banana),_),
-
-/*#S0=state(corner2,out(X),celieng,corner3),S1=state(_,_,eaten(banana),_),plan(S0,S1,L)*/
-
-/*#S0=state(corner2,out(X),celieng,corner3),S1=state(_,_,eaten(X),_),plan(S0,S1,L).*/
-le banane potrebbero essere in basso?
-*/
-/* Plan with one monkey*/
+#S0=state(corner2,out(garden),celieng,corner3),S1=state(_,_,eaten(banana),_),plan(S0,S1,L).
+#S0=state(corner2,out(garden),celieng,corner3),S1=state(_,_,eaten(X),_),plan(S0,S1,L).
+Plan with one monkey*/
 
 openable(window).
 action(state(X,opened(banana),floor(Pos1)),eat,state(X,eaten(banana),floor(Pos1))).
