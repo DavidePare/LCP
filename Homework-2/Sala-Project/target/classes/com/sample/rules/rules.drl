@@ -30,7 +30,7 @@ end
 /**
 Check if player lose money and leave it when they lose all money.
 */
-rule "A player lose everything"
+rule "A player loses everything"
     //include attributes such as "salience" here...
     when
         //conditions
@@ -65,7 +65,8 @@ rule "User Money"
 			$avg: average( $a )
 			)
 	then
-		System.out.println(	"User) - Maximum value of money:" + $max + " Minimum:" + $min + " Averange:" + $avg);		
+		System.out.println(	"User) - Maximum value of money:" + $max + 
+					" Minimum:" + $min + " Averange:" + $avg);		
 end
 
 
@@ -95,7 +96,6 @@ rule "Sala Full"
         //conditions
         $s : Sala ($s.getMachines.size()==$s.getPlayers.size() , 
         		   $s.getMachines.size()>0)
-	//	$s.getMachines().size()==$s.getPlayers().size()
     then
         //actions
         System.out.println("\u001B[31mSala Slot full. Number of machines and players "
@@ -109,6 +109,7 @@ rule "step"
 		$s: Sala($players : players)
 		$p: Player() from $players
 	then
+	
 		int x= (int)Math.floor(Math.random()*(1000-0+1)+0);
 		if(x<800) {
 			modify(
@@ -132,7 +133,7 @@ rule "Boss lose all reputation"
         $s: Sala (getBoss().isFailed())
     then
     	$s.changeBoss();
-    	System.out.println("\u001B[31mThe old boss is failed, Now boss is welcome! \u001B[0m");
+    	System.out.println("\u001B[31mThe old boss is failed,Now boss is welcome! \u001B[0m");
         //actions
 
 end
@@ -143,6 +144,7 @@ rule "Boss with good reputation"
     then 
     	System.out.println("\u001B[32mBoss with good reputation!\u001B[0m");
 end
+
 
 
 query "palyer-are-going-toLoseAll"
